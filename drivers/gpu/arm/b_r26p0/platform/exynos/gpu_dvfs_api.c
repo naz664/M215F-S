@@ -474,7 +474,7 @@ int gpu_dvfs_init_time_in_state(void)
 
 	DVFS_ASSERT(platform);
 
-	for (i = gpu_dvfs_get_level(platform->gpu_max_clock); i <= gpu_dvfs_get_level(platform->gpu_min_clock); i++)
+	for (i = gpu_dvfs_get_level(platform->gpu_max_clock_limit); i <= gpu_dvfs_get_level(platform->gpu_min_clock); i++)
 		platform->table[i].time = 0;
 #endif /* CONFIG_MALI_DEBUG_SYS */
 
@@ -497,7 +497,7 @@ int gpu_dvfs_update_time_in_state(int clock)
 		prev_time = get_jiffies_64();
 
 	current_time = get_jiffies_64();
-	if ((level >= gpu_dvfs_get_level(platform->gpu_max_clock)) && (level <= gpu_dvfs_get_level(platform->gpu_min_clock)))
+		if ((level >= gpu_dvfs_get_level(platform->gpu_max_clock_limit)) && (level <= gpu_dvfs_get_level(platform->gpu_min_clock)))
 		platform->table[level].time += current_time-prev_time;
 
 	prev_time = current_time;
@@ -543,6 +543,26 @@ int gpu_dvfs_get_level_clock(int clock)
 			return platform->table[i].clock;
 
 	return -1;
+}
+
+int gpu_dvfs_get_min_clock_limit(void)
+{
+	struct kbase_device *kbdev = pkbdev;
+	struct exynos_context *platform = (struct exynos_context *) kbdev->platform_context;
+
+	DVFS_ASSERT(platform);
+
+	return platform->gpu_min_clock_limit;
+}
+
+int gpu_dvfs_get_max_clock_limit(void)
+{
+	struct kbase_device *kbdev = pkbdev;
+	struct exynos_context *platform = (struct exynos_context *) kbdev->platform_context;
+
+	DVFS_ASSERT(platform);
+
+	return platform->gpu_max_clock_limit;
 }
 
 int gpu_dvfs_get_voltage(int clock)
