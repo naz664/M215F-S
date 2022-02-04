@@ -279,6 +279,8 @@ static int gpu_dvfs_update_config_data_from_dt(struct kbase_device *kbdev)
 	gpu_update_config_data_int(np, "gpu_max_clock", &platform->gpu_max_clock);
 #ifdef CONFIG_CAL_IF
 	platform->gpu_max_clock_limit = (int)cal_dfs_get_max_freq(platform->g3d_cmu_cal_id);
+        platform->interactive.highspeed_clock = 764000;
+        platform->interactive.highspeed_load = 75;
 #else
 	gpu_update_config_data_int(np, "gpu_max_clock_limit", &platform->gpu_max_clock_limit);
 #endif
