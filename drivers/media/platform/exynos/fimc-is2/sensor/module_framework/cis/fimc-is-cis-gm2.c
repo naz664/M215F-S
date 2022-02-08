@@ -62,11 +62,11 @@ extern struct fimc_is_lib_support gPtr_lib_support;
 int sensor_gm2_i2c_read16(struct i2c_client *client, u16 start_addr, int read_size)
 {
 	/* Indirect mode */
-	int ret = 0;
+	int ret = 0, i;
 	u16 read_value;
 	fimc_is_sensor_write16(client, 0x602C, 0x2000);
 	fimc_is_sensor_write16(client, 0x602E, start_addr);
-	for (int i = 0; i < read_size ; i++) {
+	for (i = 0; i < read_size ; i++) {
 		ret = fimc_is_sensor_read16(client, 0x6F12, &read_value);
 		info("gm2 read(Page 0x2000) addr(%#x) :  value(%#x)", start_addr + (i*2), read_value);
 	}
@@ -289,7 +289,7 @@ p_err:
 
 int sensor_gm2_cis_GGC_write(struct v4l2_subdev *subdev)
 {
-	int ret = 0;
+	int ret = 0, i;
 	struct fimc_is_cis *cis;
 	struct i2c_client *client = NULL;
 
@@ -337,7 +337,7 @@ int sensor_gm2_cis_GGC_write(struct v4l2_subdev *subdev)
 		fimc_is_sensor_write16(client, 0x6028, 0x2000);
 		fimc_is_sensor_write16(client, 0x602A, SENSOR_GM2_GGC_REG_ADDR);
 		
-		for (int i = 0; i < data_size ; i++)
+		for (i = 0; i < data_size ; i++)
 			fimc_is_sensor_write8(client, 0x6F12, cal_data[i+2]);
 	} else {
 		/* To do check : Little Endian (0x00, 0xFF), Invalid (0xFF, 0xFF) */
