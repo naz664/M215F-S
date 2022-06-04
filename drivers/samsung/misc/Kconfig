@@ -9,14 +9,6 @@ config SEC_HQM_DEVICE
 	help
 	  Samsung hqm device feature
 
-comment "Samsung TSP Logging Options"
-config SEC_DEBUG_TSP_LOG
-	default n
-	bool "Enable tsp log support" if EMBEDDED
-	depends on SEC_EXT
-	help
-	  This option enables additional log buffer for tsp log.
-
 config SEC_PM_BIGDATA
 	bool "Enable Samsung Mobile Power management big data support"
 	default y
