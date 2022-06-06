@@ -163,7 +163,7 @@ blk_crypt_t *blk_crypt_get_context(struct block_device *bdev, const char *cipher
 	struct blk_crypt_t *bctx;
 	bctx = blk_crypt_alloc_context(bdev, cipher_str);
 	if (IS_ERR(bctx)) {
-		pr_debug("error allocating diskciher '%s' err: %d",
+		pr_debug("error allocating diskciher '%s' err: %ld",
 			cipher_str, PTR_ERR(bctx));
 		return bctx;
 	}
@@ -210,7 +210,7 @@ void blk_crypt_put_context(blk_crypt_t *bc_ctx)
 }
 
 /* H/W algorithm APIs */
-static int blk_crypt_initialize()
+static int blk_crypt_initialize(void)
 {
 	if (likely(blk_crypt_cachep))
 		return 0;
