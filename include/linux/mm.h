@@ -2628,7 +2628,7 @@ void __init setup_nr_node_ids(void);
 static inline void setup_nr_node_ids(void) {}
 #endif
 
-extern inline bool need_memory_boosting(struct pglist_data *pgdat);
+extern bool need_memory_boosting(struct pglist_data *pgdat);
 
 enum memsize_kernel_type {
 	MEMSIZE_KERNEL_KERNEL = 0,
