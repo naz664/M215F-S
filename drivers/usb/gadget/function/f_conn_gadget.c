@@ -1132,7 +1132,7 @@ static ssize_t conn_gadget_usb_buffer_size_store(struct device *dev,
 	}
 
 	if (_conn_gadget_dev->rd_queue_buf) 
-		vfree(_conn_gadget_dev->rd_queue_buf);
+	        vfree(_conn_gadget_dev->rd_queue_buf);
 
 	_conn_gadget_dev->transfer_size 	= value * 1024;
 	_conn_gadget_dev->rd_queue_size 	= kfifo_size;
