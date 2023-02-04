@@ -279,6 +279,8 @@ static int gpu_dvfs_update_config_data_from_dt(struct kbase_device *kbdev)
 	gpu_update_config_data_int(np, "gpu_max_clock", &platform->gpu_max_clock);
 #ifdef CONFIG_CAL_IF
 	platform->gpu_max_clock_limit = (int)cal_dfs_get_max_freq(platform->g3d_cmu_cal_id);
+        platform->interactive.highspeed_clock = 764000;
+        platform->interactive.highspeed_load = 75;
 #else
 	gpu_update_config_data_int(np, "gpu_max_clock_limit", &platform->gpu_max_clock_limit);
 #endif
@@ -288,12 +290,18 @@ static int gpu_dvfs_update_config_data_from_dt(struct kbase_device *kbdev)
 	gpu_update_config_data_int(np, "gpu_cold_minimum_vol", &platform->cold_min_vol);
 	gpu_update_config_data_int(np, "gpu_voltage_offset_margin", &platform->gpu_default_vol_margin);
 	gpu_update_config_data_bool(np, "gpu_tmu_control", &platform->tmu_status);
+	platform->tmu_status=1;
 	gpu_update_config_data_int(np, "gpu_temp_throttling_level_num", &of_data_int);
 	if (of_data_int == TMU_LOCK_CLK_END)
 		gpu_update_config_data_int_array(np, "gpu_temp_throttling", platform->tmu_lock_clk, TMU_LOCK_CLK_END);
 	else
 		GPU_LOG(DVFS_WARNING, DUMMY, 0u, 0u, "mismatch tmu lock table size: %d, %d\n",
 				of_data_int, TMU_LOCK_CLK_END);
+		platform->tmu_lock_clk[0]=1053000;
+		platform->tmu_lock_clk[1]=949000;
+		platform->tmu_lock_clk[2]=839000;
+		platform->tmu_lock_clk[3]=764000;
+		platform->tmu_lock_clk[4]=683000;
 #ifdef CONFIG_CPU_THERMAL_IPA
 	gpu_update_config_data_int(np, "gpu_power_coeff", &platform->ipa_power_coeff_gpu);
 	gpu_update_config_data_int(np, "gpu_dvfs_time_interval", &platform->gpu_dvfs_time_interval);

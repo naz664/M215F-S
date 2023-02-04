@@ -339,7 +339,6 @@ void blk_sync_queue(struct request_queue *q)
 		struct blk_mq_hw_ctx *hctx;
 		int i;
 
-		cancel_delayed_work_sync(&q->requeue_work);
 		queue_for_each_hw_ctx(q, hctx, i)
 			cancel_delayed_work_sync(&hctx->run_work);
 	} else {
@@ -798,7 +797,7 @@ int blk_queue_enter(struct request_queue *q, bool nowait)
 		 */
 		smp_rmb();
 
-		wait_event(q->mq_freeze_wq,
+		wait_event_interruptible(q->mq_freeze_wq,
 			   !atomic_read(&q->mq_freeze_depth) ||
 			   blk_queue_dying(q));
 		if (blk_queue_dying(q))
