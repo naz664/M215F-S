@@ -1,32 +1,36 @@
 name: build
 
 on:
+  push:
+    branches:
+      Naz-Latest
+  pull_request:
+    branches:
+      Naz-Latest
   workflow_dispatch:
 
 jobs:
-  runs-on: ubuntu-latest
-   
-  steps:
-   
- - name: Checkout source
-  uses: actions/checkout@v4
-  with:
-      fetch-depth: 1
-      
- - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 6
-      
- - name: Cloning Toolchains & Building
-      run: |
-        sudo apt update
-        sudo apt upgrade
-        sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
-        bash init.sh
-        bash build_kernel.sh
-  - name: Upload kernel
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 1
+
+      - name: Install packages & setup
+        run: |
+          sudo apt update
+          sudp apt upgrade
+          sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
+          bash init.sh
+      - name: Run build
+        run: |
+          bash build_kernel.sh
+
+      - name: Upload kernel
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Najkernel
+          name: Kernel Image
           path: arch/arm64/boot/I*
