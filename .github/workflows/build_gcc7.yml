@@ -29,7 +29,7 @@ jobs:
       - name: Run build
         run: |
           export PATH=$PWD/toolchain/proton-clang/bin:$PATH
-          bash auto.sh
+          bash auto_workflow.sh
 
       - name: Upload kernel
         uses: actions/upload-artifact@v3.1.2
