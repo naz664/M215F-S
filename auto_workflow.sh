@@ -16,4 +16,4 @@ export ANDROID_MAJOR_VERSION=s
 
 
 make ARCH=arm64 LD=ld.lld AR=llvm-ar STRIP=llvm-strip OBJDUMP=llvm-objdump OBJCOPY=llvm-objcopy NM=llvm-nm CONFIG_SECTION_MISMATCH_WARN_ONLY=y exynos9610-m21dd_defconfig
-make ARCH=arm64 LD=ld.lld AR=llvm-ar STRIP=llvm-strip OBJDUMP=llvm-objdump OBJCOPY=llvm-objcopy NM=llvm-nm CONFIG_SECTION_MISMATCH_WARN_ONLY=y -j4
+make ARCH=arm64 LD=ld.lld AR=llvm-ar STRIP=llvm-strip OBJDUMP=llvm-objdump OBJCOPY=llvm-objcopy NM=llvm-nm CONFIG_SECTION_MISMATCH_WARN_ONLY=y -j$(nproc)
