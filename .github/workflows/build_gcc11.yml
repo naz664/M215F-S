@@ -1,4 +1,4 @@
-name: build_gcc7
+name: build_gcc11
 
 on:
   push:
