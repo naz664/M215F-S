@@ -1,0 +1,38 @@
+name: build_gcc11
+
+on:
+  push:
+    branches:
+      Naz-Latest
+  pull_request:
+    branches:
+      Naz-Latest
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 1
+
+      - name: Install packages & setup
+        run: |
+          sudo apt update
+          sudo apt upgrade
+          sudo apt -y install wget lld gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
+          bash init_gcc11.sh
+          
+      - name: Run build
+        run: |
+          export PATH=$PWD/toolchain/proton-clang/bin:$PATH
+          bash auto_workflow_gcc11.sh
+
+      - name: Upload kernel
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Kernel Image
+          path: arch/arm64/boot/Image

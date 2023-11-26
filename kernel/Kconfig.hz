@@ -23,6 +23,21 @@ choice
 	  with lots of processors that may show reduced performance if
 	  too many timer interrupts are occurring.
 
+    config HZ_125
+		bool "125 HZ"
+	help
+	  125 Hz is for a typical octa-core processor.
+
+	config HZ_150
+		bool "150 HZ"
+	help
+	  150 Hz Can be helpful to reduce latency on octa-core processor if 125 Hz is not good enough.
+
+    config HZ_166
+		bool "166 HZ"
+	help
+	  166 Hz is a typical hexa-core processor.
+
 	config HZ_250
 		bool "250 HZ"
 	help
@@ -30,7 +45,7 @@ choice
 	 while also showing good interactive responsiveness even
 	 on SMP and NUMA systems. If you are going to be using NTSC video
 	 or multimedia, selected 300Hz instead.
-
+	 
 	config HZ_300
 		bool "300 HZ"
 	help
@@ -50,6 +65,9 @@ endchoice
 config HZ
 	int
 	default 100 if HZ_100
+	default 125 if HZ_125
+	default 150 if HZ_150
+	default 166 if HZ_166
 	default 250 if HZ_250
 	default 300 if HZ_300
 	default 1000 if HZ_1000
